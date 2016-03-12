@@ -1,0 +1,29 @@
+MOV #0x40000000 $C
+
+start:
+  MOV $C $A
+  MOV :start $B
+
+attaque_debut:
+  ADD #0x100 $A
+  CMP $A $B
+  JMP <HE> :ass
+  MEMW [4] #0x20000100 $A
+  JMP <> :attaque_debut
+
+ass:
+  MOV :end $A
+  MOV #0x40100000 $B
+
+attaque_fin:
+  ADD #0x100 $A
+  CMP $A $B
+  JMP <HE> :bad
+  MEMW [4] #0x20000100 $A
+  JMP <> :attaque_fin
+
+bad:
+  ADD #0x02 $C
+  JMP <> :start
+
+end:
